@@ -1,5 +1,4 @@
 import { openDb } from "../database/database.config";
-import { Database } from "sqlite";
 import SupplierInterface from "../interfaces/supplier.interface";
 
 export async function createTable() {
