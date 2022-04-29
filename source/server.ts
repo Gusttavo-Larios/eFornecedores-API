@@ -22,4 +22,9 @@ server.use((request: Request, response: Response) =>
   response.status(404).json({ error: "Not Found" })
 );
 
-server.listen(process.env.PORT);
+let port: number | string | undefined = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
+
+server.listen(port);
