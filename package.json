@@ -4,7 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "postinstall": "tsc",
     "start-dev": "ts-node-dev source/server.ts",
     "start": "node dist/server.js"
   },
