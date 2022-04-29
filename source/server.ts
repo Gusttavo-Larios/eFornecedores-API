@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import { openDb } from "./config/database.config";
+import { openDb } from "./database/database.config";
 import dotenv from "dotenv";
 
 import mainRoutes from "./routes";
