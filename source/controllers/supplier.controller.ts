@@ -24,8 +24,18 @@ export function resgiter(request: Request, response: Response) {
   response.status(200).json({ message: "Fornecedor cadastrado com sucesso." });
 }
 
-export function update(request: Request, response: Response) {
+export async function update(request: Request, response: Response) {
   const supplier: SupplierInterface = request.body;
+
+  const registered_supplier = await selectSuplier(supplier.cnpj_number);
+  const cnpj_already_registered = registered_supplier ? true : false;
+
+  if (cnpj_already_registered) {
+    return response
+      .status(400)
+      .json({ message: "CNPJ já existente no sistema" });
+  }
+
   updateSupplier(supplier);
   response.status(200).json({ message: "Fornecedor atualizado com sucesso" });
 }

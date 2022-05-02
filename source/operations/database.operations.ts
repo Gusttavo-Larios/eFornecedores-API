@@ -10,7 +10,7 @@ export async function createTable() {
 }
 
 export async function insertSupplier(supplier: SupplierInterface) {
-  const {
+  let {
     cep_number,
     city,
     cnpj_number,
@@ -20,6 +20,8 @@ export async function insertSupplier(supplier: SupplierInterface) {
     state,
     street,
   } = supplier;
+
+  state = state.toUpperCase();
 
   openDb().then((database) => {
     database.run(
@@ -46,15 +48,16 @@ export async function selectAllSupliers() {
 
 export async function selectSuplier(cnpj_number: string) {
   const database = openDb();
-  const response = (await database).all(
+  const response: Promise<SupplierInterface[]> = (await database).all(
     "SELECT * FROM Supplier WHERE cnpj_number=?",
     [cnpj_number]
   );
-  return response;
+  const supplier = await response;
+  return supplier[0];
 }
 
 export async function updateSupplier(supplier: SupplierInterface) {
-  const {
+  let {
     cep_number,
     city,
     cnpj_number,
@@ -65,6 +68,9 @@ export async function updateSupplier(supplier: SupplierInterface) {
     street,
     id,
   } = supplier;
+
+  state = state.toUpperCase();
+
   openDb().then((database) => {
     return database.run(
       "UPDATE Supplier SET company_name=?, fantasy_name=?, cnpj_number=?, city=?, state=?, district=?, cep_number=?, street=? WHERE id=?",
