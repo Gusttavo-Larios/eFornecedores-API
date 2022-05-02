@@ -6,9 +6,10 @@ import {
   selectSuplier,
   updateSupplier,
   deleteSupplier,
+  selectAllSuppliersByCnpj,
 } from "../operations/database.operations";
 
-export async function searchAll(request: Request, response: Response) {
+export async function searchAll(_request: Request, response: Response) {
   const allSuppliers = await selectAllSupliers();
   return response.status(200).json({ allSuppliers });
 }
@@ -40,10 +41,20 @@ export async function resgiter(request: Request, response: Response) {
 export async function update(request: Request, response: Response) {
   const supplier: SupplierInterface = request.body;
 
-  const registered_supplier = await selectSuplier(supplier.cnpj_number);
-  const cnpj_already_registered = registered_supplier ? true : false;
+  const registered_suppliers = await selectAllSuppliersByCnpj(
+    supplier.cnpj_number
+  );
 
-  if (cnpj_already_registered) {
+  const cnpj_already_registered = registered_suppliers.every(
+    (element, _index, _array) => {
+      return (
+        element.id === supplier.id &&
+        element.cnpj_number == supplier.cnpj_number
+      );
+    }
+  );
+
+  if (!cnpj_already_registered) {
     return response
       .status(400)
       .json({ message: "CNPJ já existente no sistema" });

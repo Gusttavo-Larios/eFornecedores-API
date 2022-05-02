@@ -46,6 +46,15 @@ export async function selectAllSupliers() {
   return response;
 }
 
+export async function selectAllSuppliersByCnpj(cnpj_number: string) {
+  const database = openDb();
+  const response: Promise<SupplierInterface[]> = (await database).all(
+    "SELECT * FROM Supplier WHERE cnpj_number=?",
+    [cnpj_number]
+  );
+  return response;
+}
+
 export async function selectSuplier(cnpj_number: string) {
   const database = openDb();
   const response: Promise<SupplierInterface[]> = (await database).all(
